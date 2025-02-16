@@ -1,14 +1,6 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client";
-
-export type Book = {
-  id: string;
-  title: string;
-};
-
-type AllBooksQuery = {
-  books: Book[];
-};
+import { Book, AllBooksQuery } from "src/gql/graphql";
 
 function WrappedBooks(){
   const { loading, error, data } = useQuery<AllBooksQuery>(allBooksQuery);
@@ -34,16 +26,17 @@ function WrappedBooks(){
 const allBooksQuery = gql `
  query allBooks {
   books {
+    id
     title
   }
  }
 `;
 
-function Books({ books }: { books: Book[] }) {
+function Books({ books }: { books: AllBooksQuery["books"] }) {
   return (
     <ul>
-      {books.map((book, idx) => (
-        <li key={idx}>{book.title}</li>
+      {books.map((book) => (
+        <li key={book.id}>{book.id} {book.title}</li>
       ))}
     </ul>
   );
