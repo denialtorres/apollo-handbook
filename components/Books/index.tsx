@@ -1,12 +1,15 @@
 import { gql } from "@apollo/client";
+import { useDebouncedCallback } from "use-debounce";
 import { useAllBooksWithTitleLazyQuery, AllBooksWithTitleQuery } from "src/gql/graphql";
 
 function WrappedBooks(){
   const [loadBooks, {loading, error, data}] = useAllBooksWithTitleLazyQuery()
 
-  const findBook = (title: string) => {
+  const _findBook = (title: string) => {
     loadBooks({ variables: {title} });
   }
+
+  const findBook = useDebouncedCallback(_findBook, 250);
 
   const renderResults = () => {
     if(loading){
@@ -33,27 +36,6 @@ function WrappedBooks(){
         {renderResults()}
     </div>
   )
-  // if (loading) {
-  //   return <span>Loading...</span>;
-  // }
-
-  // if (error){
-  //   return <span>Something went wrong: ${error}</span>;
-  // }
-
-  // if (data){
-  //   return (
-  //     <div>
-  //       <h1>Books</h1>
-  //       <input type="text"
-  //         className="shadow-sm appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
-  //         placeholder="Search.."
-  //         onChange={(e) => findBook(e.target.value)}
-  //       />
-  //       {renderResults()}
-  //     </div>
-  //   )
-  // }
 }
 
 const allBooksWithTitleQuery = gql `
