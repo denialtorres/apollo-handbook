@@ -12,10 +12,12 @@ export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' |
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 
-export type AllBooksQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllBooksWithTitleQueryVariables = Exact<{
+  title: Scalars['String']['input'];
+}>;
 
 
-export type AllBooksQuery = { __typename?: 'Query', books: Array<{ __typename?: 'Book', id: string, title: string }> };
+export type AllBooksWithTitleQuery = { __typename?: 'Query', books: Array<{ __typename?: 'Book', id: string, title: string }> };
 
 
 /** All built-in and custom scalars, mapped to their actual values */
@@ -83,9 +85,9 @@ export type User = {
 export type UserResult = SuspendedUser | User;
 
 
-export const AllBooksDocument = gql`
-    query allBooks {
-  books {
+export const AllBooksWithTitleDocument = gql`
+    query allBooksWithTitle($title: String!) {
+  books: booksWithTitle(title: $title) {
     id
     title
   }
@@ -93,33 +95,34 @@ export const AllBooksDocument = gql`
     `;
 
 /**
- * __useAllBooksQuery__
+ * __useAllBooksWithTitleQuery__
  *
- * To run a query within a React component, call `useAllBooksQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllBooksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllBooksWithTitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllBooksWithTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAllBooksQuery({
+ * const { data, loading, error } = useAllBooksWithTitleQuery({
  *   variables: {
+ *      title: // value for 'title'
  *   },
  * });
  */
-export function useAllBooksQuery(baseOptions?: Apollo.QueryHookOptions<AllBooksQuery, AllBooksQueryVariables>) {
+export function useAllBooksWithTitleQuery(baseOptions: Apollo.QueryHookOptions<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables> & ({ variables: AllBooksWithTitleQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AllBooksQuery, AllBooksQueryVariables>(AllBooksDocument, options);
+        return Apollo.useQuery<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables>(AllBooksWithTitleDocument, options);
       }
-export function useAllBooksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllBooksQuery, AllBooksQueryVariables>) {
+export function useAllBooksWithTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AllBooksQuery, AllBooksQueryVariables>(AllBooksDocument, options);
+          return Apollo.useLazyQuery<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables>(AllBooksWithTitleDocument, options);
         }
-export function useAllBooksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AllBooksQuery, AllBooksQueryVariables>) {
+export function useAllBooksWithTitleSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<AllBooksQuery, AllBooksQueryVariables>(AllBooksDocument, options);
+          return Apollo.useSuspenseQuery<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables>(AllBooksWithTitleDocument, options);
         }
-export type AllBooksQueryHookResult = ReturnType<typeof useAllBooksQuery>;
-export type AllBooksLazyQueryHookResult = ReturnType<typeof useAllBooksLazyQuery>;
-export type AllBooksSuspenseQueryHookResult = ReturnType<typeof useAllBooksSuspenseQuery>;
-export type AllBooksQueryResult = Apollo.QueryResult<AllBooksQuery, AllBooksQueryVariables>;
+export type AllBooksWithTitleQueryHookResult = ReturnType<typeof useAllBooksWithTitleQuery>;
+export type AllBooksWithTitleLazyQueryHookResult = ReturnType<typeof useAllBooksWithTitleLazyQuery>;
+export type AllBooksWithTitleSuspenseQueryHookResult = ReturnType<typeof useAllBooksWithTitleSuspenseQuery>;
+export type AllBooksWithTitleQueryResult = Apollo.QueryResult<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables>;
