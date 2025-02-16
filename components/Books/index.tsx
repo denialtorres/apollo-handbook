@@ -1,9 +1,8 @@
 import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client";
-import { Book, AllBooksQuery } from "src/gql/graphql";
+import { AllBooksQuery, useAllBooksQuery } from "src/gql/graphql";
 
 function WrappedBooks(){
-  const { loading, error, data } = useQuery<AllBooksQuery>(allBooksQuery);
+  const { loading, error, data } = useAllBooksQuery();
 
   if (loading) {
     return <span>Loading...</span>;
