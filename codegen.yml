@@ -1,0 +1,7 @@
+overwrite: true
+schema: "https://apollo-handbook-api.vercel.app/api/graphql"
+documents: "components/**/*.{tsx,ts}"
+generates:
+  src/gql/:
+    preset: "client"
+    plugins: []
