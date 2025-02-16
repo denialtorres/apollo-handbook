@@ -1,18 +1,13 @@
-import Books, { Book } from "components/Books";
-
-const books: Book[] = [
-  {
-    id: "1",
-    title: "The Apollo Handbook",
-  },
-];
+import client from "client";
+import { ApolloProvider } from "@apollo/client";
+import WrappedBooks from "components/Books";
 
 
 function App() {
   return (
-    <div className="my-4 mx-auto px-4">
-      <Books books={books} />
-    </div>
+    <ApolloProvider client={client}>
+      <WrappedBooks />
+    </ApolloProvider>
   );
 }
 
