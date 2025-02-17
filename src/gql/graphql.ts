@@ -16,8 +16,14 @@ export type AllBooksWithTitleQueryVariables = Exact<{
   title: Scalars['String']['input'];
 }>;
 
-
 export type AllBooksWithTitleQuery = { __typename?: 'Query', books: Array<{ __typename?: 'Book', id: string, title: string }> };
+
+export type UserQueryVariables = Exact<{
+  username: Scalars['String']['input'];
+}>;
+
+
+export type UserQuery = { __typename?: 'Query', result: { __typename?: 'SuspendedUser', id: string, username: string, suspensionReason: string } | { __typename?: 'User', id: string, username: string } };
 
 
 /** All built-in and custom scalars, mapped to their actual values */
@@ -126,3 +132,51 @@ export type AllBooksWithTitleQueryHookResult = ReturnType<typeof useAllBooksWith
 export type AllBooksWithTitleLazyQueryHookResult = ReturnType<typeof useAllBooksWithTitleLazyQuery>;
 export type AllBooksWithTitleSuspenseQueryHookResult = ReturnType<typeof useAllBooksWithTitleSuspenseQuery>;
 export type AllBooksWithTitleQueryResult = Apollo.QueryResult<AllBooksWithTitleQuery, AllBooksWithTitleQueryVariables>;
+export const UserDocument = gql`
+    query user($username: String!) {
+  result: user(username: $username) {
+    ... on SuspendedUser {
+      id
+      username
+      suspensionReason
+    }
+    ... on User {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables> & ({ variables: UserQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
+export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export function useUserSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<UserQuery, UserQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserSuspenseQueryHookResult = ReturnType<typeof useUserSuspenseQuery>;
+export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;

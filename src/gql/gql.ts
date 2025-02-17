@@ -15,9 +15,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
     "\n query allBooksWithTitle($title: String!) {\n  books: booksWithTitle(title: $title) {\n    id\n    title\n  }\n }\n": typeof types.AllBooksWithTitleDocument,
+    "\n  query user($username: String!) {\n    result: user(username: $username){\n      ... on SuspendedUser {\n        id\n        username\n        suspensionReason\n      }\n\n      ... on User {\n        id\n        username\n      }\n    }\n  }\n": typeof types.UserDocument,
 };
 const documents: Documents = {
     "\n query allBooksWithTitle($title: String!) {\n  books: booksWithTitle(title: $title) {\n    id\n    title\n  }\n }\n": types.AllBooksWithTitleDocument,
+    "\n  query user($username: String!) {\n    result: user(username: $username){\n      ... on SuspendedUser {\n        id\n        username\n        suspensionReason\n      }\n\n      ... on User {\n        id\n        username\n      }\n    }\n  }\n": types.UserDocument,
 };
 
 /**
@@ -38,6 +40,10 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n query allBooksWithTitle($title: String!) {\n  books: booksWithTitle(title: $title) {\n    id\n    title\n  }\n }\n"): (typeof documents)["\n query allBooksWithTitle($title: String!) {\n  books: booksWithTitle(title: $title) {\n    id\n    title\n  }\n }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query user($username: String!) {\n    result: user(username: $username){\n      ... on SuspendedUser {\n        id\n        username\n        suspensionReason\n      }\n\n      ... on User {\n        id\n        username\n      }\n    }\n  }\n"): (typeof documents)["\n  query user($username: String!) {\n    result: user(username: $username){\n      ... on SuspendedUser {\n        id\n        username\n        suspensionReason\n      }\n\n      ... on User {\n        id\n        username\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
