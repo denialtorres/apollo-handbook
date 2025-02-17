@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { useDebouncedCallback } from "use-debounce";
-import { useAllBooksWithTitleLazyQuery, AllBooksWithTitleQuery } from "src/gql/graphql";
+import { useAllBooksWithTitleLazyQuery, AllBooksWithTitleQuery } from "src/generated/graphql";
 
 function WrappedBooks(){
   const [loadBooks, {loading, error, data}] = useAllBooksWithTitleLazyQuery()

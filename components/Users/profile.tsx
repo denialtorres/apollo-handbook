@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { UserQuery, useUserQuery } from "src/gql/graphql";
+import { UserQuery, useUserQuery } from "src/generated/graphql";
 
 type User = Extract<
  UserQuery["result"],
