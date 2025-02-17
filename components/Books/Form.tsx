@@ -1,9 +1,20 @@
 import { Form, Field, FieldRenderProps } from "react-final-form"
 
+const required = (value: string) => value ? undefined : "This field is requried";
 
+const TextInput = ({ input, meta }: FieldRenderProps<string>) => {
+  const hasError = meta.error && meta.touched;
 
-const TextInput = ({ input }: FieldRenderProps<string>) => {
-  return <input type="text" className="text-field" {...input} />;
+  return(
+    <div>
+      <input
+        type="text"
+        className={`text-field ${hasError && "has-error"}`}
+        {...input}
+        />
+        { hasError && <span className="text-red-500">{meta.error}</span> }
+    </div>
+  );
 };
 
 type BookFormProps = {
@@ -14,15 +25,15 @@ const BookForm = ({ onSubmit }: BookFormProps) => {
   return (
     <Form
      onSubmit={onSubmit}
-     render={({ handleSubmit }) => {
+     render={({ handleSubmit, hasValidationErrors }) => {
       return(
         <form onSubmit={handleSubmit}>
           <label>
             Title
-            <Field name="title" component={TextInput} />
+            <Field name="title" component={TextInput} validate={required}/>
           </label>
 
-          <input type="submit" className="submit" value="Create Book" />
+          <input type="submit" className="submit" value="Create Book" disabled={hasValidationErrors} />
         </form>
       );
      }}
